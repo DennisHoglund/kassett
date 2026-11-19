@@ -125,9 +125,10 @@ test.describe('Tangenter', () => {
     await page.locator('#forra').click();
     await expect.poll(() => api.anrop.some((a) => a.url === 'POST /me/player/previous')).toBe(true);
 
-    api.spelare = spelare({ is_playing: false });
+    // Låten spelar fortfarande när man trycker paus; Spotify svarar pausat först efteråt
     await page.locator('#spela').click();
     await expect.poll(() => api.anrop.some((a) => a.url === 'PUT /me/player/pause')).toBe(true);
+    api.spelare = spelare({ is_playing: false });
     await expect(page.locator('body')).not.toHaveClass(/spelar/);
     await expect(page.locator('#spela')).toHaveAttribute('aria-label', 'Spela');
 
