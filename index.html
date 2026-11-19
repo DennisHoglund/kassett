@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Kassett">
+  <meta name="theme-color" content="#1c1b1a">
+  <title>Kassett</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@700&family=Space+Grotesk:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="dack" id="dack">
+
+    <!-- Klocka och datum -->
+    <section class="tra" aria-label="Klocka">
+      <div class="tra-insida">
+        <div class="led" id="klocka">00:00</div>
+        <div class="tra-info">
+          <div class="datum" id="datum"></div>
+          <div class="enhet"><span class="enhet-lampa" id="enhet-lampa"></span><span id="enhet">Ingen enhet</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Kassetten -->
+    <section class="kassett" id="kassett" aria-label="Kassett">
+      <span class="skruv s1"></span><span class="skruv s2"></span><span class="skruv s3"></span><span class="skruv s4"></span>
+      <div class="etikett">
+        <div class="etikett-text">
+          <div class="sida">A</div>
+          <div class="etikett-rader">
+            <div class="titel" id="titel">Inget spelas</div>
+            <div class="artist" id="artist">Starta musik i Spotify</div>
+          </div>
+        </div>
+        <div class="rander"></div>
+        <div class="etikett-fot"><span>C-90</span><span>SPOTIFY</span><span>TYPE I · NORMAL</span></div>
+        <div class="fonster">
+          <div class="glans"></div>
+          <div class="pack vanster" id="pack-v"></div>
+          <div class="pack hoger" id="pack-h"></div>
+          <svg class="spole vanster" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#f2ede2"/><circle cx="20" cy="20" r="10" fill="#141110"/><path d="M20 10v4M20 26v4M10 20h4M26 20h4M13 13l3 3M27 27l-3-3" stroke="#f2ede2" stroke-width="3"/><circle cx="20" cy="4" r="1.6" fill="#b9ae96"/></svg>
+          <svg class="spole hoger" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#f2ede2"/><circle cx="20" cy="20" r="10" fill="#141110"/><path d="M20 10v4M20 26v4M10 20h4M26 20h4M13 13l3 3M27 27l-3-3" stroke="#f2ede2" stroke-width="3"/><circle cx="20" cy="4" r="1.6" fill="#b9ae96"/></svg>
+        </div>
+        <div class="polaroid" id="polaroid" hidden>
+          <img id="omslag" alt="Skivomslag">
+        </div>
+        <div class="tejp" id="tejp" hidden></div>
+      </div>
+      <div class="botten"></div>
+      <div class="botten-hal"><i class="hal stort"></i><i class="hal"></i><span class="huvud"><i class="hal litet"></i><b></b></span><i class="hal"></i><i class="hal stort"></i></div>
+    </section>
+
+    <!-- Räkneverk och förlopp -->
+    <div class="forlopp-rad">
+      <div class="raknare" id="pos">0:00</div>
+      <button class="forlopp" id="forlopp" aria-label="Spola i låten"><span class="forlopp-fyll" id="forlopp-fyll"></span></button>
+      <div class="langd" id="langd">0:00</div>
+    </div>
+
+    <!-- Tangenter -->
+    <div class="tangenter">
+      <button class="tangent" id="forra" aria-label="Föregående låt">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5v14M19 5l-10 7 10 7z" fill="none" stroke="#222" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="tangent" id="spela" aria-label="Spela">
+        <svg class="ikon-paus" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14" fill="none" stroke="#c8402c" stroke-width="3" stroke-linecap="round"/></svg>
+        <svg class="ikon-spela" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="#222"/></svg>
+      </button>
+      <button class="tangent" id="nasta" aria-label="Nästa låt">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5v14M5 5l10 7-10 7z" fill="none" stroke="#222" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Nivåmätare -->
+    <section class="niva" aria-label="Nivå">
+      <div class="niva-topp"><span>NIVÅ</span><span class="meddelande" id="meddelande" role="status"></span><button class="eject" id="eject" aria-label="Inställningar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5l7 8H5z" fill="currentColor"/><path d="M5 18h14" stroke="currentColor" stroke-width="2.4"/></svg></button></div>
+      <div class="vu"><div class="vu-kanal"><div class="vu-fyll v1"></div></div><div class="vu-kanal"><div class="vu-fyll v2"></div></div></div>
+      <div class="niva-fot"><span>L</span><span>R</span></div>
+    </section>
+  </main>
+
+  <!-- Inloggning och inställningar -->
+  <div class="lucka" id="lucka" hidden>
+    <div class="lucka-ruta" role="dialog" aria-modal="true" aria-labelledby="lucka-rubrik">
+      <h1 id="lucka-rubrik">Kassett</h1>
+      <p class="lucka-text">Logga in med ditt Spotify-konto. Musiken spelas i Spotify-appen och styrs härifrån.</p>
+      <label for="klient">Client ID</label>
+      <input id="klient" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="text" placeholder="32 tecken från Spotify Dashboard">
+      <p class="hjalp">Redirect URI i Spotify Dashboard: <code id="adress"></code></p>
+      <div class="lucka-knappar">
+        <button class="knapp" id="logga-in">Logga in med Spotify</button>
+        <button class="knapp sekundar" id="logga-ut" hidden>Logga ut</button>
+        <button class="knapp sekundar" id="stang" hidden>Stäng</button>
+      </div>
+      <p class="status" id="status" role="status"></p>
+      <p class="version">Version <span id="version"></span></p>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="spotify.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

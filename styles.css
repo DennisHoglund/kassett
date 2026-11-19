@@ -1,0 +1,166 @@
+/* Kassett – 1 rem motsvarar 16 px på en 430 px bred skärm (iPhone Pro Max). Allt skalar med skärmen. */
+:root {
+  --bakgrund: #1c1b1a;
+  --panel: #141312;
+  --kant: #2c2a27;
+  --text: #e8e2d4;
+  --text-svag: #a39c8e;
+  --led: #ff3b2a;
+  --etikett: #efe7d4;
+  --black: #2b3a8f;
+  --rod: #c8402c;
+  --gron: #46e06a;
+  --tejp: #141110;
+  --mono: 'Share Tech Mono', ui-monospace, Menlo, monospace;
+  --sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --hand: 'Kalam', 'Marker Felt', cursive;
+  font-size: min(calc(100vw / 26.875), calc(100vh / 54));
+}
+@supports (height: 100dvh) { :root { font-size: min(calc(100vw / 26.875), calc(100dvh / 54)); } }
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; height: 100%; background: var(--bakgrund); color: var(--text); font-family: var(--sans); }
+body { overflow: hidden; overscroll-behavior: none; -webkit-user-select: none; user-select: none; }
+button { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+
+.dack {
+  height: 100%;
+  max-width: 26.875rem;
+  margin: 0 auto;
+  padding: calc(env(safe-area-inset-top) + 0.75rem) 1.125rem calc(env(safe-area-inset-bottom) + 1rem);
+  display: flex; flex-direction: column; gap: 1rem;
+}
+
+/* ---------- Träpanel med klocka ---------- */
+.tra { background: linear-gradient(180deg, #6b4428, #4e2f1b); border-radius: 0.875rem; padding: 0.75rem;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 0.375rem 1.125rem rgba(0,0,0,.5); }
+.tra-insida { background: #121212; border-radius: 0.5rem; padding: 0.75rem 0.875rem; display: flex; align-items: center; gap: 0.875rem; }
+.led { background: #1d0605; border-radius: 0.375rem; padding: 0.25rem 0.75rem; font-family: var(--mono); font-size: 3.375rem; line-height: 1;
+  color: var(--led); text-shadow: 0 0 0.625rem rgba(255,59,42,.7); letter-spacing: 0.125rem; font-variant-numeric: tabular-nums; }
+.tra-info { display: flex; flex-direction: column; gap: 0.5rem; min-width: 0; flex: 1; }
+.datum { font-family: var(--mono); font-size: 0.8125rem; color: #b9b2a3; letter-spacing: 0.09rem; text-transform: uppercase; }
+.enhet { display: flex; align-items: center; gap: 0.4rem; font-family: var(--mono); font-size: 0.8125rem; color: #7ff0c8; letter-spacing: 0.06rem;
+  text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.enhet span:last-child { overflow: hidden; text-overflow: ellipsis; }
+.enhet-lampa { flex: none; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: #3a1a17; }
+.enhet-lampa.pa { background: #ff4a33; box-shadow: 0 0 0.375rem #ff4a33; }
+
+/* ---------- Kassetten ---------- */
+.kassett { position: relative; flex: none; width: 24.625rem; height: 15.625rem; align-self: center; border-radius: 0.875rem;
+  background: linear-gradient(180deg, #3d3c39, #262523);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12), inset 0 -2px 0 rgba(0,0,0,.4), 0 0.625rem 1.375rem rgba(0,0,0,.55); }
+.skruv { position: absolute; width: 0.625rem; height: 0.625rem; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #8a8780, #3a3936); }
+.s1 { left: 0.44rem; top: 0.44rem; } .s2 { right: 0.44rem; top: 0.44rem; } .s3 { left: 0.44rem; bottom: 0.44rem; } .s4 { right: 0.44rem; bottom: 0.44rem; }
+
+.etikett { position: absolute; left: 1.375rem; right: 1.375rem; top: 1rem; height: 10.375rem; border-radius: 0.375rem;
+  background: var(--etikett); box-shadow: 0 1px 2px rgba(0,0,0,.4); overflow: hidden; }
+.etikett-text { position: absolute; left: 0.75rem; top: 0.625rem; right: 5.25rem; display: flex; gap: 0.5rem; align-items: flex-start; }
+.sida { flex: none; width: 1.5rem; height: 1.5rem; background: var(--rod); color: #fff; border-radius: 0.2rem; display: flex; align-items: center;
+  justify-content: center; font-weight: 700; font-size: 0.9375rem; }
+.etikett-rader { min-width: 0; flex: 1; color: var(--black); }
+.titel, .artist { font-family: var(--hand); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  transform: rotate(-1deg); transform-origin: left center; }
+.titel { font-size: 1.75rem; line-height: 1; letter-spacing: -0.02rem; padding-top: 0.125rem; }
+.titel.mellan { font-size: 1.5rem; } .titel.liten { font-size: 1.25rem; }
+.artist { font-size: 1.0625rem; line-height: 1.3; opacity: .9; border-top: 1px solid #cdbf9f; margin-top: 0.2rem; padding-top: 1px; }
+.rander { position: absolute; left: 0; right: 0; top: 4.5rem; height: 4.5rem;
+  background: linear-gradient(180deg, #e2572e 0 33.3%, #f1b52f 33.3% 66.6%, #2f9da0 66.6% 100%); }
+.etikett-fot { position: absolute; left: 0; right: 0; bottom: 0.375rem; display: flex; justify-content: space-between; padding: 0 0.75rem;
+  font-family: var(--mono); font-size: 0.5625rem; letter-spacing: 0.09rem; color: #6b6150; }
+
+.fonster { position: absolute; left: 3.875rem; right: 3.875rem; top: 4.25rem; height: 4.75rem; border-radius: 0.625rem; background: var(--tejp);
+  box-shadow: inset 0 0 0 3px var(--etikett), inset 0 0 0 4px #b9ae96; overflow: hidden; }
+.glans { position: absolute; left: 0; right: 0; top: 0; height: 40%; background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,0)); z-index: 2; }
+.pack { position: absolute; top: 2.375rem; width: 6.75rem; height: 6.75rem; border-radius: 50%; transform: translate(-50%, -50%);
+  background: repeating-radial-gradient(circle, #4b2e1b 0 1.5px, #3a2314 1.5px 3px); box-shadow: 0 0 0 1px #24160d;
+  transition: width 0.8s linear, height 0.8s linear; }
+.pack.vanster { left: 3.125rem; } .pack.hoger { left: 11rem; }
+.spole { position: absolute; top: 1.125rem; width: 2.5rem; height: 2.5rem; animation: snurra 3s linear infinite; animation-play-state: paused; }
+.spole.vanster { left: 1.875rem; } .spole.hoger { left: 9.75rem; }
+.spelar .spole { animation-play-state: running; }
+@keyframes snurra { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.polaroid { position: absolute; right: 0.625rem; top: 0.375rem; width: 4.25rem; padding: 0.1875rem 0.1875rem 0.625rem; background: #fff;
+  transform: rotate(5deg); box-shadow: 0 0.1875rem 0.5rem rgba(0,0,0,.35); z-index: 3; }
+.polaroid img { display: block; width: 3.875rem; height: 3.875rem; object-fit: cover; background: #d8d0bf; }
+.tejp { position: absolute; right: 1.875rem; top: 0; width: 2rem; height: 0.75rem; background: rgba(240,220,150,.75); transform: rotate(-4deg); z-index: 4; }
+
+.botten { position: absolute; left: 4.5rem; right: 4.5rem; bottom: 0; height: 3.5rem; background: linear-gradient(180deg, #2e2d2a, #1f1e1c);
+  clip-path: polygon(7% 0, 93% 0, 100% 100%, 0 100%); }
+.botten-hal { position: absolute; left: 4.5rem; right: 4.5rem; bottom: 0; height: 3.5rem; display: flex; align-items: center;
+  justify-content: space-between; padding: 0.375rem 2.125rem 0; }
+.hal { display: block; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: #0c0b0a; }
+.hal.stort { width: 1rem; height: 1rem; box-shadow: inset 0 2px 3px rgba(0,0,0,.8); }
+.hal.litet { width: 0.375rem; height: 0.375rem; }
+.huvud { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; padding-top: 0.625rem; }
+.huvud b { display: flex; align-items: flex-end; justify-content: center; width: 2.75rem; height: 0.875rem; background: #0c0b0a; border-radius: 2px 2px 0 0; }
+.huvud b::after { content: ''; width: 1.625rem; height: 0.3125rem; background: #b07a3c; }
+
+/* ---------- Räkneverk ---------- */
+.forlopp-rad { display: flex; align-items: center; gap: 0.625rem; }
+.raknare { background: var(--etikett); color: var(--bakgrund); border-radius: 0.25rem; padding: 0.25rem 0.5rem; font-family: var(--mono); font-size: 1.125rem;
+  min-width: 3.5rem; text-align: center; font-variant-numeric: tabular-nums; }
+.langd { font-family: var(--mono); font-size: 1.125rem; color: #b9b2a3; min-width: 3rem; text-align: right; }
+.forlopp { flex: 1; position: relative; height: 2.75rem; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.forlopp::before, .forlopp-fyll { content: ''; position: absolute; left: 0; top: 50%; height: 0.75rem; margin-top: -0.375rem; border-radius: 2px; }
+.forlopp::before { right: 0; background: repeating-linear-gradient(90deg, #4a1512 0 6px, #2a0b09 6px 9px); }
+.forlopp-fyll { width: 0; background: repeating-linear-gradient(90deg, #ff4a33 0 6px, #2a0b09 6px 9px); box-shadow: 0 0 0.5rem rgba(255,74,51,.5); }
+
+/* ---------- Tangenter ---------- */
+.tangenter { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; }
+.tangent { height: 5.25rem; border: 0; border-radius: 0.625rem; background: linear-gradient(180deg, #f2efe8, #cfcbc2);
+  box-shadow: 0 0.375rem 0 #8f8b83, 0 0.625rem 0.875rem rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: transform 80ms, box-shadow 80ms; }
+.tangent svg { width: 1.875rem; height: 1.875rem; }
+.tangent:active, .tangent.nere { transform: translateY(0.25rem); background: linear-gradient(180deg, #d9d5cc, #bdb8ae);
+  box-shadow: 0 0.125rem 0 #8f8b83, 0 0.25rem 0.5rem rgba(0,0,0,.5); }
+.tangent:disabled { opacity: .55; }
+#spela .ikon-paus { display: none; }
+.spelar #spela .ikon-paus { display: block; }
+.spelar #spela .ikon-spela { display: none; }
+
+/* ---------- Nivå ---------- */
+.niva { flex: 1; min-height: 6rem; background: var(--panel); border-radius: 0.75rem; padding: 0.625rem 0.875rem 0.75rem;
+  display: flex; flex-direction: column; gap: 0.5rem; box-shadow: inset 0 0 0 2px var(--kant); }
+.niva-topp, .niva-fot { display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 0.6875rem;
+  letter-spacing: 0.125rem; color: var(--text-svag); }
+.niva-fot { justify-content: center; gap: 1.25rem; }
+.niva-fot span { width: 4.5rem; text-align: center; }
+.meddelande { flex: 1; text-align: center; letter-spacing: 0.03rem; color: #f1b52f; padding: 0 0.5rem; }
+.eject { width: 2.75rem; height: 2.75rem; margin: -0.625rem -0.625rem -0.625rem 0; border: 0; background: transparent; color: var(--text-svag);
+  display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.eject svg { width: 1.125rem; height: 1.125rem; }
+.vu { flex: 1; display: flex; justify-content: center; gap: 1.25rem; min-height: 3rem; }
+/* Lysande segment underifrån; en mörk hinna uppifrån döljer det som inte lyser */
+.vu-kanal { position: relative; overflow: hidden; width: 4.5rem; border-radius: 3px;
+  background: repeating-linear-gradient(0deg, transparent 0 0.5rem, var(--panel) 0.5rem 0.6875rem),
+              linear-gradient(0deg, var(--gron) 0 62%, #f1b52f 62% 82%, #ff4a33 82% 100%); }
+.vu-fyll { position: absolute; left: 0; right: 0; top: 0; height: 100%; background: rgba(20,19,18,.84); transition: height 0.4s; }
+.spelar .vu-fyll.v1 { animation: vu1 0.9s ease-in-out infinite; }
+.spelar .vu-fyll.v2 { animation: vu2 1.1s ease-in-out infinite; }
+@keyframes vu1 { 0%,100% { height: 62%; } 30% { height: 18%; } 60% { height: 45%; } 80% { height: 8%; } }
+@keyframes vu2 { 0%,100% { height: 40%; } 25% { height: 60%; } 55% { height: 12%; } 75% { height: 50%; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .spelar .spole, .spelar .vu-fyll.v1, .spelar .vu-fyll.v2 { animation: none; }
+  .spelar .vu-fyll { height: 40%; }
+}
+
+/* ---------- Lucka: inloggning och inställningar ---------- */
+.lucka { position: fixed; inset: 0; background: rgba(10,9,8,.86); display: flex; align-items: center; justify-content: center;
+  padding: calc(env(safe-area-inset-top) + 1rem) 1.125rem calc(env(safe-area-inset-bottom) + 1rem); z-index: 10; -webkit-user-select: text; user-select: text; }
+.lucka-ruta { width: 100%; max-width: 24.625rem; background: var(--etikett); color: #23305c; border-radius: 0.875rem; padding: 1.25rem;
+  box-shadow: 0 0.625rem 1.5rem rgba(0,0,0,.6); }
+.lucka h1 { margin: 0 0 0.25rem; font-family: var(--hand); font-size: 2.25rem; line-height: 1; transform: rotate(-1deg); }
+.lucka-text, .hjalp, .status, .version { font-size: 0.875rem; line-height: 1.4; color: #3d3a33; }
+.lucka label { display: block; margin-top: 0.75rem; font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.1rem; color: #5a5243; }
+.lucka input { width: 100%; margin-top: 0.25rem; height: 2.75rem; padding: 0 0.625rem; border: 2px solid #b9ae96; border-radius: 0.375rem;
+  background: #fffaf0; font-family: var(--mono); font-size: 1rem; color: #1c1b1a; }
+.lucka input:focus { outline: 2px solid var(--black); outline-offset: 1px; }
+.hjalp code { font-family: var(--mono); word-break: break-all; color: #1c1b1a; }
+.lucka-knappar { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+.knapp { min-height: 2.75rem; padding: 0 1rem; border: 0; border-radius: 0.5rem; background: var(--rod); color: #fff; font-weight: 700; cursor: pointer; }
+.knapp.sekundar { background: #d8ceb8; color: #23305c; }
+.status { min-height: 1.2em; margin: 0.75rem 0 0; color: #8a2a1c; }
+.version { margin: 0.25rem 0 0; font-family: var(--mono); font-size: 0.6875rem; color: #6b6150; }

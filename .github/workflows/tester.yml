@@ -1,0 +1,71 @@
+name: Tester
+
+# Kör Playwright-testerna vid varje commit och publicerar appen + testrapporten
+# till GitHub Pages: appen på /kassett/ och rapporten på /kassett/rapport/
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  test-och-publicera:
+    name: Testa och publicera
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Installera beroenden
+        run: npm ci
+
+      - name: Installera webbläsare (WebKit och Chromium)
+        run: npx playwright install --with-deps webkit chromium
+
+      - name: Kör Playwright-testerna
+        id: tester
+        continue-on-error: true
+        run: npx playwright test
+
+      - name: Bygg sidan (app + rapport)
+        if: always()
+        run: |
+          mkdir -p _site
+          rsync -a ./ _site/ \
+            --exclude .git --exclude .github --exclude node_modules \
+            --exclude tests --exclude test-results --exclude rapport \
+            --exclude package.json --exclude package-lock.json --exclude playwright.config.js \
+            --exclude README.md --exclude SPEC.md --exclude CLAUDE.md --exclude .gitignore
+          mkdir -p rapport && cp -r rapport _site/rapport
+          touch _site/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Publicera på GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
+
+      - name: Markera commit som röd om tester misslyckades
+        if: steps.tester.outcome == 'failure'
+        run: |
+          echo "::error::Testerna misslyckades – se https://dennishoglund.github.io/kassett/rapport/"
+          exit 1
