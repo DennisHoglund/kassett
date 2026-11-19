@@ -19,7 +19,8 @@ test.describe('Inloggning', () => {
     await page.route('https://accounts.spotify.com/authorize?**', async (r) => {
       authorize = new URL(r.request().url());
       const tillbaka = 'http://127.0.0.1:4174/?code=kod-1&state=' + authorize.searchParams.get('state');
-      await r.fulfill({ status: 302, headers: { location: tillbaka } });
+      // WebKit i Playwright kan inte svara med 302, så en sida skickar tillbaka i stället
+      await r.fulfill({ status: 200, contentType: 'text/html', body: `<script>location.replace(${JSON.stringify(tillbaka)})</script>` });
     });
     await page.goto('./');
     await page.locator('#klient').fill(KLIENT);

@@ -1,12 +1,12 @@
 // Kassett – startar allt: klocka, inloggning, vad som spelas och tangenterna.
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 
 (function () {
   const $ = (id) => document.getElementById(id);
   const S = window.KassettSpotify;
   const CFG = window.KASSETT_CONFIG;
 
-  let senaste = null, hamtadVid = 0, upptagen = false, pollTimer = null;
+  let senaste = null, hamtadVid = 0, pollTimer = null;
 
   // ---------- Klocka ----------
   const p2 = (n) => String(n).padStart(2, '0');
@@ -82,8 +82,7 @@ const VERSION = '1.0.0';
 
   // ---------- Styrning ----------
   async function styr(vad, knapp) {
-    if (upptagen || !S.inloggad()) return;
-    upptagen = true;
+    if (!S.inloggad()) return;
     if (knapp) knapp.classList.add('nere');
     try {
       if (vad === 'spela') {
@@ -96,7 +95,6 @@ const VERSION = '1.0.0';
     } catch (e) {
       meddela(S.felText(e), 6);
     } finally {
-      upptagen = false;
       if (knapp) setTimeout(() => knapp.classList.remove('nere'), 120);
       setTimeout(() => hamta(), 600);
     }
