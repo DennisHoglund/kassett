@@ -17,7 +17,7 @@ En egen spelare för iPhone som ser ut som ett kassettdäck från 80-talet och v
 2. **Kassett**: handskriven titel och artist (mindre text för långa titlar), omslag som polaroid, spolar som snurrar när musiken spelar, bandpackar som flyttas från vänster till höger under låten.
 3. **Räkneverk**: tid, förloppsrad (tryck för att spola) och längd.
 4. **Tangenter**: föregående, spela/paus, nästa.
-5. **Nivå**: LED-mätare L/R (animerade, inte riktig ljudnivå), statusrad och eject-knapp för inställningar.
+5. **Nivåmätare** med fyra skal: analoga VU-mätare (förval), grafisk equalizer (10 band), spektrumanalysator (fluorescent display, 16 staplar) och däckets toppmätare (L/R, −30 till +8 dB). Byts med ett tryck på mätaren eller i inställningarna och sparas i `kassett-matare`. Rörelserna är animationer (Spotify ger ingen ljudnivå) och står still vid paus. Panelen har också statusrad och eject-knapp för inställningar.
 
 ## Uppdatering
 - `GET /me/player` var 3:e sekund när appen syns, var 15:e i bakgrunden. Förloppet räknas lokalt mellan anropen.

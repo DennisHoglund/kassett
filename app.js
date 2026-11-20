@@ -1,10 +1,11 @@
 // Kassett – startar allt: klocka, inloggning, vad som spelas och tangenterna.
-const VERSION = '1.0.1';
+const VERSION = '1.1.0';
 
 (function () {
   const $ = (id) => document.getElementById(id);
   const S = window.KassettSpotify;
   const CFG = window.KASSETT_CONFIG;
+  const M = window.KassettMatare;
 
   let senaste = null, hamtadVid = 0, pollTimer = null;
 
@@ -51,6 +52,12 @@ const VERSION = '1.0.1';
     $('polaroid').hidden = !bild;
     $('tejp').hidden = !bild;
     ritaPosition();
+  }
+
+  // ---------- Nivåmätare ----------
+  function ritaMatare() {
+    M.rita($('niva'), $('matare'), $('matare-namn'));
+    document.querySelectorAll('input[name="skal"]').forEach((r) => { r.checked = r.value === M.aktuell(); });
   }
 
   // ---------- Meddelanden ----------
@@ -128,6 +135,8 @@ const VERSION = '1.0.1';
     $('nasta').addEventListener('click', (e) => styr('nasta', e.currentTarget));
     $('forra').addEventListener('click', (e) => styr('forra', e.currentTarget));
     $('forlopp').addEventListener('click', spolaTill);
+    $('matare').addEventListener('click', () => { M.nasta(); ritaMatare(); });
+    document.querySelectorAll('input[name="skal"]').forEach((r) => r.addEventListener('change', () => { M.valj(r.value); ritaMatare(); }));
     $('eject').addEventListener('click', () => visaLucka());
     $('stang').addEventListener('click', stangLucka);
     $('logga-in').addEventListener('click', async () => {
@@ -144,6 +153,7 @@ const VERSION = '1.0.1';
     setInterval(ritaKlocka, 1000);
     setInterval(() => { if (senaste && senaste.spelar) ritaPosition(); }, 500);
     koppla();
+    ritaMatare();
     ritaLat();
     const fel = await S.hanteraRetur();
     if (!S.inloggad()) { visaLucka(fel); return; }

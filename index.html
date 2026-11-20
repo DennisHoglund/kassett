@@ -81,11 +81,10 @@
       </button>
     </div>
 
-    <!-- Nivåmätare -->
-    <section class="niva" aria-label="Nivå">
-      <div class="niva-topp"><span>NIVÅ</span><span class="meddelande" id="meddelande" role="status"></span><button class="eject" id="eject" aria-label="Inställningar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5l7 8H5z" fill="currentColor"/><path d="M5 18h14" stroke="currentColor" stroke-width="2.4"/></svg></button></div>
-      <div class="vu"><div class="vu-kanal"><div class="vu-fyll v1"></div></div><div class="vu-kanal"><div class="vu-fyll v2"></div></div></div>
-      <div class="niva-fot"><span>L</span><span>R</span></div>
+    <!-- Nivåmätare: utseendet (skal) byts med ett tryck eller i inställningarna -->
+    <section class="niva" id="niva" aria-label="Nivåmätare">
+      <div class="niva-topp"><span id="matare-namn">LEVEL</span><span class="meddelande" id="meddelande" role="status"></span><button class="eject" id="eject" aria-label="Inställningar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5l7 8H5z" fill="currentColor"/><path d="M5 18h14" stroke="currentColor" stroke-width="2.4"/></svg></button></div>
+      <button class="matare" id="matare" aria-label="Byt mätare"></button>
     </section>
   </main>
 
@@ -102,6 +101,13 @@
         <button class="knapp sekundar" id="logga-ut" hidden>Logga ut</button>
         <button class="knapp sekundar" id="stang" hidden>Stäng</button>
       </div>
+      <fieldset class="skal-val">
+        <legend>Nivåmätare</legend>
+        <label><input type="radio" name="skal" value="vu"> Analoga VU-mätare</label>
+        <label><input type="radio" name="skal" value="eq"> Grafisk equalizer</label>
+        <label><input type="radio" name="skal" value="spektrum"> Spektrumanalysator</label>
+        <label><input type="radio" name="skal" value="topp"> Däckets toppmätare</label>
+      </fieldset>
       <p class="status" id="status" role="status"></p>
       <p class="version">Version <span id="version"></span></p>
     </div>
@@ -109,6 +115,7 @@
 
   <script src="config.js"></script>
   <script src="spotify.js"></script>
+  <script src="matare.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 // Höj versionen vid varje ändring av appfilerna så att telefonen hämtar nya filer.
-const CACHE = 'kassett-v2';
+const CACHE = 'kassett-v3';
 
 const SHELL = [
   './',
@@ -7,6 +7,7 @@ const SHELL = [
   './styles.css',
   './config.js',
   './spotify.js',
+  './matare.js',
   './app.js',
   './manifest.webmanifest',
   './icons/icon.svg',
