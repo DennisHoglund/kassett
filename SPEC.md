@@ -15,9 +15,13 @@ En egen spelare för iPhone som ser ut som ett kassettdäck från 80-talet och v
 ## Skärmen (uppifrån)
 1. **Träpanel**: klocka (röd LED), veckodag och datum, enhet som spelar med lampa.
 2. **Kassett**: handskriven titel och artist (mindre text för långa titlar), omslag som polaroid, spolar som snurrar när musiken spelar, bandpackar som flyttas från vänster till höger under låten.
-3. **Räkneverk**: tid, förloppsrad (tryck för att spola) och längd.
-4. **Tangenter**: föregående, spela/paus, nästa.
-5. **Nivåmätare** med fyra skal: analoga VU-mätare (förval), grafisk equalizer (10 band), spektrumanalysator (fluorescent display, 16 staplar) och däckets toppmätare (L/R, −30 till +8 dB). Byts med ett tryck på mätaren eller i inställningarna och sparas i `kassett-matare`. Rörelserna är animationer (Spotify ger ingen ljudnivå) och står still vid paus. Panelen har också statusrad och eject-knapp för inställningar.
+3. **Sida B**: remsa under kassetten med nästa låt i Spotifys kö (titel, artist, litet omslag). Kön hämtas bara när låten byts. Tom kö visar "Inget i kön".
+4. **Räkneverk**: tid, förloppsrad (tryck för att spola) och längd.
+5. **Tangenter**: föregående, spela/paus, nästa.
+6. **Nivåmätare** med fyra skal: analoga VU-mätare (förval), grafisk equalizer (10 band), spektrumanalysator (fluorescent display, 16 staplar) och däckets toppmätare (L/R, −30 till +8 dB). Byts med ett tryck på mätaren eller i inställningarna och sparas i `kassett-matare`. Rörelserna är animationer (Spotify ger ingen ljudnivå) och står still vid paus. Panelen har också statusrad och eject-knapp för inställningar.
+
+## Låtbyte
+- När Spotify byter låt (knapp eller själv) matas kassetten ut uppåt under träpanelen, en ny med ny etikett glider in och studsar på plats (cirka 1 s). Spolarna står still under bytet och Sida B tonar om. Med "minska rörelse" byts innehållet utan animation.
 
 ## Uppdatering
 - `GET /me/player` var 3:e sekund när appen syns, var 15:e i bakgrunden. Förloppet räknas lokalt mellan anropen.
@@ -31,5 +35,4 @@ En egen spelare för iPhone som ser ut som ett kassettdäck från 80-talet och v
 | Nätverksfel | Ingen kontakt med Spotify, försöker igen |
 
 ## Kommande steg
-- Steg 2: finslipning av kassetten (byte av låt med animation, sida B).
 - Steg 3: väder i träpanelen.

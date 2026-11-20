@@ -23,9 +23,17 @@ function spelare(over) {
   }, over || {});
 }
 
+function nastaLat(over) {
+  return Object.assign({
+    id: 'lat2', name: 'The Final Countdown', artists: [{ id: 'a2', name: 'Europe' }],
+    album: { images: [{ url: 'https://i.scdn.co/image/b-liten', width: 64 }, { url: 'https://i.scdn.co/image/b-stor', width: 640 }] }
+  }, over || {});
+}
+
 async function mocka(page) {
   const api = {
     spelare: spelare(),   // null = inget spelas (204)
+    ko: [nastaLat()],     // Spotifys kö, första = Sida B
     premium: true,
     aktivEnhet: true,
     nere: false,
@@ -54,6 +62,9 @@ async function mocka(page) {
     if (req.method() === 'GET' && u.pathname === '/v1/me/player') {
       return api.spelare ? r.fulfill({ status: 200, json: api.spelare }) : r.fulfill({ status: 204, body: '' });
     }
+    if (req.method() === 'GET' && u.pathname === '/v1/me/player/queue') {
+      return r.fulfill({ status: 200, json: { currently_playing: api.spelare && api.spelare.item, queue: api.ko } });
+    }
     if (u.pathname === '/v1/me/player/devices') {
       return r.fulfill({ status: 200, json: { devices: [{ id: 'iph', name: 'Dennis iPhone', type: 'Smartphone', is_active: false }] } });
     }
@@ -71,4 +82,4 @@ async function inloggad(page) {
   }, KLIENT);
 }
 
-module.exports = { mocka, inloggad, spelare, KLIENT, PNG };
+module.exports = { mocka, inloggad, spelare, nastaLat, KLIENT, PNG };

@@ -1,5 +1,5 @@
 // Kassett – startar allt: klocka, inloggning, vad som spelas och tangenterna.
-const VERSION = '1.1.0';
+const VERSION = '1.2.0';
 
 (function () {
   const $ = (id) => document.getElementById(id);
@@ -8,6 +8,8 @@ const VERSION = '1.1.0';
   const M = window.KassettMatare;
 
   let senaste = null, hamtadVid = 0, pollTimer = null;
+  let visadId = null, ko = null, koFor = null, byter = false;
+  const lugn = () => window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ---------- Klocka ----------
   const p2 = (n) => String(n).padStart(2, '0');
@@ -54,6 +56,42 @@ const VERSION = '1.1.0';
     ritaPosition();
   }
 
+  // ---------- Sida B ----------
+  function ritaSidaB() {
+    $('b-titel').textContent = ko ? ko.titel : 'Inget i kön';
+    $('b-artist').textContent = ko ? ko.artist : '';
+    const bild = ko && ko.bild;
+    if (bild && $('b-omslag').getAttribute('src') !== bild) $('b-omslag').src = bild;
+    $('b-omslag').hidden = !bild;
+  }
+  async function hamtaKo() {
+    const id = senaste && senaste.id;
+    if (!id || koFor === id) return;
+    koFor = id;
+    try { ko = await S.hamtaKo(); } catch (e) { ko = null; koFor = null; }
+    if (!byter) ritaSidaB();
+  }
+
+  // ---------- Låtbyte: kassetten matas ut och en ny glider in ----------
+  function vantaRam() { return new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))); }
+  async function bytKassett() {
+    if (lugn()) { ritaLat(); ritaSidaB(); return; }
+    byter = true;
+    document.body.classList.add('byter');
+    $('kassett').classList.add('ut');
+    $('sida-b').classList.add('byter');
+    await new Promise((r) => setTimeout(r, 460));
+    $('kassett').classList.replace('ut', 'start');
+    ritaLat();
+    ritaSidaB();
+    await vantaRam();
+    $('kassett').classList.remove('start');
+    $('sida-b').classList.remove('byter');
+    await new Promise((r) => setTimeout(r, 600));
+    document.body.classList.remove('byter');
+    byter = false;
+  }
+
   // ---------- Nivåmätare ----------
   function ritaMatare() {
     M.rita($('niva'), $('matare'), $('matare-namn'));
@@ -73,7 +111,11 @@ const VERSION = '1.1.0';
     try {
       senaste = await S.hamta();
       hamtadVid = Date.now();
-      ritaLat();
+      const nyttId = senaste ? senaste.id : null;
+      const nyLat = visadId && nyttId && nyttId !== visadId;
+      visadId = nyttId;
+      if (nyLat) { koFor = null; hamtaKo(); bytKassett(); }
+      else if (!byter) { ritaLat(); hamtaKo(); }
       if ($('meddelande').dataset.natfel) { meddela(''); delete $('meddelande').dataset.natfel; }
     } catch (e) {
       if (e.utloggad) { senaste = null; ritaLat(); visaLucka(e.message); return; }
@@ -143,7 +185,7 @@ const VERSION = '1.1.0';
       $('status').textContent = 'Öppnar Spotify …';
       try { await S.loggaIn($('klient').value); } catch (e) { $('status').textContent = e.message; }
     });
-    $('logga-ut').addEventListener('click', () => { S.loggaUt(); senaste = null; ritaLat(); visaLucka('Utloggad.'); });
+    $('logga-ut').addEventListener('click', () => { S.loggaUt(); senaste = null; ko = null; koFor = null; visadId = null; ritaLat(); ritaSidaB(); visaLucka('Utloggad.'); });
     document.addEventListener('visibilitychange', () => { if (!document.hidden) hamta(); schemalagg(); });
   }
 
@@ -151,7 +193,7 @@ const VERSION = '1.1.0';
     $('version').textContent = VERSION;
     ritaKlocka();
     setInterval(ritaKlocka, 1000);
-    setInterval(() => { if (senaste && senaste.spelar) ritaPosition(); }, 500);
+    setInterval(() => { if (senaste && senaste.spelar && !byter) ritaPosition(); }, 500);
     koppla();
     ritaMatare();
     ritaLat();

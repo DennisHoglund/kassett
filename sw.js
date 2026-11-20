@@ -1,5 +1,5 @@
 // Höj versionen vid varje ändring av appfilerna så att telefonen hämtar nya filer.
-const CACHE = 'kassett-v3';
+const CACHE = 'kassett-v4';
 
 const SHELL = [
   './',

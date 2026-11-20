@@ -26,10 +26,11 @@ button { font: inherit; color: inherit; }
 
 .dack {
   height: 100%;
+  overflow: hidden;
   max-width: 26.875rem;
   margin: 0 auto;
   padding: calc(env(safe-area-inset-top) + 0.75rem) 1.125rem calc(env(safe-area-inset-bottom) + 1rem);
-  display: flex; flex-direction: column; gap: 1rem;
+  display: flex; flex-direction: column; gap: 0.875rem;
 }
 
 /* ---------- Träpanel med klocka ---------- */
@@ -97,6 +98,30 @@ button { font: inherit; color: inherit; }
 .huvud b { display: flex; align-items: flex-end; justify-content: center; width: 2.75rem; height: 0.875rem; background: #0c0b0a; border-radius: 2px 2px 0 0; }
 .huvud b::after { content: ''; width: 1.625rem; height: 0.3125rem; background: #b07a3c; }
 
+/* Låtbyte: kassetten matas ut uppåt (under träpanelen) och en ny glider in */
+.tra { position: relative; z-index: 2; }
+.kassett { z-index: 1; transition: transform 0.6s cubic-bezier(.2,1.35,.4,1), opacity 0.3s; }
+.kassett.ut { transform: translateY(-105%) rotate(-5deg); opacity: 0; transition: transform 0.45s cubic-bezier(.5,0,.9,.6), opacity 0.45s ease-in; }
+.kassett.start { transform: translateY(-105%) rotate(4deg); opacity: 0; transition: none; }
+.byter .spole { animation-play-state: paused; }
+
+/* ---------- Sida B ---------- */
+.sida-b { flex: none; display: flex; align-items: center; gap: 0.625rem; background: var(--etikett); border-radius: 0.5rem; padding: 0.5rem 0.75rem;
+  color: var(--black); box-shadow: 0 0.25rem 0.75rem rgba(0,0,0,.4); transition: opacity 0.35s, transform 0.35s; }
+.sida-b.byter { opacity: 0; transform: translateY(-0.875rem); }
+.sida-b-bokstav { flex: none; align-self: stretch; width: 1.75rem; background: #2f9da0; color: #fff; border-radius: 0.2rem; display: flex;
+  align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; }
+.sida-b-text { flex: 1; min-width: 0; }
+.sida-b-rubrik { font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.125rem; color: #6b6150; }
+.sida-b-titel, .sida-b-artist { font-family: var(--hand); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transform: rotate(-1deg); }
+.sida-b-titel { font-size: 1.25rem; line-height: 1.15; }
+.sida-b-artist { font-size: 0.875rem; line-height: 1.2; opacity: .85; min-height: 1.05rem; }
+.sida-b-omslag { flex: none; width: 2.75rem; height: 2.75rem; object-fit: cover; border: 3px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,.3); background: #d8d0bf; }
+
+@media (prefers-reduced-motion: reduce) {
+  .kassett, .kassett.ut, .sida-b { transition: none; }
+}
+
 /* ---------- Räkneverk ---------- */
 .forlopp-rad { display: flex; align-items: center; gap: 0.625rem; }
 .raknare { background: var(--etikett); color: var(--bakgrund); border-radius: 0.25rem; padding: 0.25rem 0.5rem; font-family: var(--mono); font-size: 1.125rem;
@@ -121,7 +146,7 @@ button { font: inherit; color: inherit; }
 .spelar #spela .ikon-spela { display: none; }
 
 /* ---------- Nivåmätare (fyra skal) ---------- */
-.niva { flex: 1; min-height: 9rem; background: linear-gradient(180deg, #232220, #151413); border-radius: 0.75rem; padding: 0.625rem 0.875rem 0.75rem;
+.niva { flex: 1; min-height: 7.5rem; background: linear-gradient(180deg, #232220, #151413); border-radius: 0.75rem; padding: 0.625rem 0.875rem 0.75rem;
   display: flex; flex-direction: column; gap: 0.5rem; box-shadow: inset 0 0 0 2px var(--kant), inset 0 1px 0 rgba(255,255,255,.06); }
 .niva-topp { display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 0.6875rem;
   letter-spacing: 0.125rem; color: var(--text-svag); }

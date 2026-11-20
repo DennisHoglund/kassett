@@ -111,6 +111,20 @@ window.KassettSpotify = (function () {
   }
   async function hamta() { return tolka(await api('/me/player')); }
 
+  // Nästa låt i kön (Sida B). Avsnitt av poddar har show i stället för artister.
+  async function hamtaKo() {
+    const k = await api('/me/player/queue');
+    const t = k && k.queue && k.queue[0];
+    if (!t) return null;
+    const bilder = ((t.album && t.album.images) || t.images || []).slice().sort((a, b) => (a.width || 0) - (b.width || 0));
+    const liten = bilder.find((x) => (x.width || 0) >= 64) || bilder[bilder.length - 1] || {};
+    return {
+      id: t.id, titel: t.name || '',
+      artist: t.artists ? t.artists.map((a) => a.name).join(', ') : ((t.show && t.show.name) || ''),
+      bild: liten.url || ''
+    };
+  }
+
   // ---------- Styrning ----------
   function felText(e) {
     if (e.status === 403 && e.orsak === 'PREMIUM_REQUIRED') return 'Styrning kräver Spotify Premium.';
@@ -136,5 +150,5 @@ window.KassettSpotify = (function () {
   const forra = () => api('/me/player/previous', 'POST');
   const spola = (ms) => api('/me/player/seek?position_ms=' + Math.max(0, Math.round(ms)), 'PUT');
 
-  return { loggaIn, loggaUt, hanteraRetur, inloggad, klient, omdirigering, hamta, tolka, spela, pausa, nasta, forra, spola, felText };
+  return { loggaIn, loggaUt, hanteraRetur, inloggad, klient, omdirigering, hamta, hamtaKo, tolka, spela, pausa, nasta, forra, spola, felText };
 })();
